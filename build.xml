@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Symfony2 project" default="build">
+    <target name="build" depends="pull, vendors, can-execute-permissions, permissions, cache, assetic, assets">
+        <echo message="Symfony2 project"/>
+    </target>
+
+    <macrodef name="git">
+        <attribute name="command" />
+        <attribute name="dir" default="" />
+        <element name="args" optional="true" />
+        <sequential>
+            <echo message="git @{command}" />
+            <exec executable="git" dir="@{dir}">
+                <arg value="@{command}" />
+                <args/>
+            </exec>
+        </sequential>
+    </macrodef>
+
+    <target name="pull" description="Pulling changes from GIT reop">
+        <git command="pull" />
+    </target>
+
+    <target name="vendors" description="Installing Symfony2 vendors">
+        <exec executable="${basedir}/composer.phar">
+            <arg value="install" />
+        </exec>
+    </target>
+
+    <target name="can-execute-permissions">
+        <property environment="env" />
+        <condition property="permissions-command-available">
+            <available file="xs-correct-dev-permissions" filepath="${env.PATH}" />
+        </condition>
+    </target>
+
+    <target name="permissions" description="Fix permissions" if="permissions-command-available">
+        <echo message="Running xs correct permissions" />
+        <exec executable="xs-correct-dev-permissions">
+            <arg value="${basedir}/app/cache" />
+        </exec>
+        <exec executable="xs-correct-dev-permissions">
+            <arg value="${basedir}/app/logs" />
+        </exec>
+    </target>
+
+    <target name="cache" description="Cleanup cache">
+        <delete includeemptydirs="true">
+            <dirset dir="${basedir}/app/cache/">
+                <include name="*" />
+            </dirset>
+        </delete>
+    </target>
+
+    <target name="assetic" description="Dumping assets">
+        <exec executable="${basedir}/app/console">
+            <arg value="--env=prod" />
+            <arg value="assetic:dump" />
+        </exec>
+    </target>
+
+    <target name="assets" description="Installing assets">
+        <exec executable="${basedir}/app/console">
+            <arg value="assets:install" />
+            <arg value="--symlink" />
+            <arg value="${basedir}/web" />
+        </exec>
+    </target>
+</project>

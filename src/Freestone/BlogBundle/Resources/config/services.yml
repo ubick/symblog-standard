@@ -1,0 +1,8 @@
+parameters:
+#    freestone_blog.example.class: Freestone\BlogBundle\Example
+
+services:
+  freestone_blog.twig.extension:
+          class: Freestone\BlogBundle\Twig\Extensions\FreestoneBlogExtension
+          tags:
+              - { name: twig.extension }

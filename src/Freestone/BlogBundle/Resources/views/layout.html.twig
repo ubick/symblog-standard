@@ -1,0 +1,19 @@
+{# src/Freestone/BlogBundle/Resources/views/layout.html.twig #}
+{% extends '::base.html.twig' %}
+
+{% block stylesheets %}
+
+    {{ parent() }}
+
+    {% stylesheets
+        '@FreestoneBlogBundle/Resources/public/css/*'
+        output='css/combined.css'
+        filter='?yui_css'
+    %}
+        <link href="{{ asset_url }}" rel="stylesheet" media="screen" type="text/css"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block sidebar %}
+    {% render "FreestoneBlogBundle:Page:sidebar" %}
+{% endblock %}

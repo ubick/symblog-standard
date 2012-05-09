@@ -1,0 +1,31 @@
+FreestoneBlogBundle_homepage:
+  pattern:  /
+  defaults: { _controller: FreestoneBlogBundle:Page:index }
+  requirements:
+    _method:  GET
+    
+FreestoneBlogBundle_about:
+  pattern:  /about
+  defaults: { _controller: FreestoneBlogBundle:Page:about }
+  requirements:
+      _method: GET
+      
+FreestoneBlogBundle_contact:
+  pattern:  /contact
+  defaults: { _controller: FreestoneBlogBundle:Page:contact }
+  requirements:
+      _method: GET|POST
+      
+FreestoneBlogBundle_blog_show:
+  pattern: /{id}/{slug}
+  defaults: { _controller: FreestoneBlogBundle:Blog:show }
+  requirements:
+    _method: GET
+    id: \d+
+    
+FreestoneBlogBundle_comment_create:
+  pattern: /comment/{blog_id}
+  defaults: { _controller: FreestoneBlogBundle:Comment:create }
+  requirements:
+    _method: POST
+    blog_id: \d+
